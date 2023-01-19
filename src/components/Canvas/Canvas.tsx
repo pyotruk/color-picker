@@ -1,11 +1,15 @@
-import React, { useRef, useEffect } from "react";
+import React, {useRef, useEffect, useState} from "react";
 import "./Canvas.scss";
+import PickerSquare from "./../PickerSquare/PickerSquare";
 
 export default function Canvas(props: {
   setColor: (color: string) => void,
 }) {
   const canvas = useRef<HTMLCanvasElement>();
   const ctx = useRef<null | CanvasRenderingContext2D>();
+
+  const [x, setX] = useState<number>(0);
+  const [y, setY] = useState<number>(0);
 
   const initCanvas = (): void => {
     canvas.current = document.getElementById("canvas") as HTMLCanvasElement;
@@ -46,6 +50,8 @@ export default function Canvas(props: {
 
   const handleMouseMove = (event: React.MouseEvent) => {
     const pos = getMousePosition(event);
+    setX(pos.x);
+    setY(pos.y);
     const color = `X = ${pos.x}, Y = ${pos.y}`;
     props.setColor(color);
   }
@@ -54,6 +60,7 @@ export default function Canvas(props: {
     <div className="Canvas">
       <canvas id="canvas" onMouseMove={handleMouseMove}></canvas>
       <img id="img" src="/img.jpg" width="1920" height="1080"/>
+      <PickerSquare x={x} y={y}/>
     </div>
   );
 }

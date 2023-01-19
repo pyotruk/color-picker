@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  ui:
+    build:
+      context: .
+      dockerfile: ./ui/Dockerfile
+    image: ui
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx-logs:/var/log/nginx

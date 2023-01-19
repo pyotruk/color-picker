@@ -1,11 +1,8 @@
 import React, {useRef, useEffect, useState} from "react";
 import "./Canvas.scss";
 import PickerSquare from "./../PickerSquare/PickerSquare";
-
-interface Position {
-  x: number;
-  y: number;
-}
+import {ColorMatrix, Position} from "../../structures/geometry";
+import {ZOOM_RECT_SIZE} from "../../structures/constants";
 
 export default function Canvas(props: {
   setColor: (color: string) => void,
@@ -41,6 +38,7 @@ export default function Canvas(props: {
     drawImage();
   }, []);
 
+  // TODO consider size of the PickerSquare 120px
   const getPosition = (event: React.MouseEvent): Position => {
     if (!canvas.current) {
       return {x: 0, y: 0};
@@ -67,6 +65,21 @@ export default function Canvas(props: {
     return "#" + ("000000" + rgbToHex(colorData[0], colorData[1], colorData[2])).slice(-6);
   }
 
+  const buildColorMatrix = (position: Position) => {
+    const matrix: ColorMatrix = [];
+    for (let i = 0; i < ZOOM_RECT_SIZE; ++i) {
+      let row = [];
+      for (let j = 0; j < ZOOM_RECT_SIZE; ++j) {
+        row.push(getHexColor({
+          x: position.x + i,
+          y: position.y + j,
+        }));
+      }
+      matrix.push(row);
+    }
+    return matrix;
+  }
+
   const handleMouseMove = (event: React.MouseEvent) => {
     const position = getPosition(event);
     setPosition(position);
@@ -77,7 +90,10 @@ export default function Canvas(props: {
     <div className="Canvas">
       <canvas id="canvas" onMouseMove={handleMouseMove}></canvas>
       <img id="img" src="/img.jpg" width="1920" height="1080"/>
-      <PickerSquare x={position.x} y={position.y}/>
+      <PickerSquare
+        position={position}
+        colorMatrix={buildColorMatrix(position)}
+      />
     </div>
   );
 }

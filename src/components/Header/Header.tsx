@@ -1,13 +1,12 @@
-import React, { useState } from "react";
 import "./Header.scss";
 
-export default function Header() {
-  const [color, setColor] = useState<string>("");
-
+export default function Header(props: {
+  color: string,
+}) {
   return (
       <header>
         <i></i>
-        <span>{ color }</span>
+        <span>{ props.color }</span>
       </header>
   );
 }

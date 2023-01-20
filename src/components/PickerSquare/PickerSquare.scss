@@ -2,18 +2,28 @@
   position: absolute;
   z-index: 1;
   pointer-events: none;
+  clip-path: circle(50% at 50%);
 
-  $zoomedPixelSize: 6px;
+  .zoom {
+    position: relative;
 
-  .row {
-    width: 100%;
-    height: $zoomedPixelSize;
-    line-height: $zoomedPixelSize;
+    i {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: inherit;
+      height: inherit;
+      background-image: url("ZoomCircle.svg");
+      background-size: 100%;
+    }
 
-    .px {
-      display: inline-block;
-      width: $zoomedPixelSize;
-      height: $zoomedPixelSize;
+    .row {
+      width: 100%;
+
+      .px {
+        display: inline-block;
+        height: 100%;
+      }
     }
   }
 }

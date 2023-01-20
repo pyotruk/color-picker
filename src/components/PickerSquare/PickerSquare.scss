@@ -7,15 +7,42 @@
   .zoom {
     position: relative;
 
-    i {
+    i.circle {
       position: absolute;
       z-index: 1;
       top: 0;
       left: 0;
-      width: inherit;
-      height: inherit;
-      background-image: url("ZoomCircle.svg");
-      background-size: 100%;
+      bottom: 0;
+      right: 0;
+
+      &.img {
+        background-image: url("ZoomCircle.svg");
+        background-size: 100%;
+      }
+
+      &.colored {
+        border: 4px solid;
+        border-radius: 50%;
+      }
+    }
+
+    i.hint {
+      position: absolute;
+      z-index: 1;
+      top: 75%;
+      left: 0;
+      right: 0;
+      width: 70px;
+      background-color: white;
+      margin: 0 auto;
+      text-align: center;
+      border-radius: 10px;
+
+      span {
+        text-transform: uppercase;
+        font-style: normal;
+        font-size: .8em;
+      }
     }
 
     .row {

@@ -5,6 +5,7 @@ import {PICKER_SQUARE_SIZE, ZOOM_RECT_SIZE_PX, ZOOMED_PIXEL_SIZE} from "../../st
 
 export default function PickerSquare(props: {
   centerPosition: Position,
+  targetColor: string,
   colorMatrix: ColorMatrix,
 }) {
 
@@ -28,7 +29,15 @@ export default function PickerSquare(props: {
           height: `${PICKER_SQUARE_SIZE}px`,
         }}
       >
-        <i/>
+        <i className="circle img"/>
+        <i
+          className="circle colored"
+          style={{borderColor: props.targetColor}}
+        />
+
+        <i className="hint">
+          <span>{props.targetColor}</span>
+        </i>
 
         {props.colorMatrix.map((row: string[], i: number) => {
           return <div

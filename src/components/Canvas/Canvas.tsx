@@ -21,6 +21,8 @@ export default function Canvas(props: {
   const [viewportPosition, setViewportPosition] = useState<Position>({x: 0, y: 0});
   const [canvasPosition, setCanvasPosition] = useState<Position>({x: 0, y: 0});
 
+  const [color, setColor] = useState<string>("");
+
   const initCanvas = (): void => {
     canvas.current = document.getElementById("canvas") as HTMLCanvasElement;
     ctx.current = canvas.current.getContext("2d", {willReadFrequently: true});
@@ -69,6 +71,7 @@ export default function Canvas(props: {
 
     const color = getPixelHexColor(ctx.current, canvasPosition);
     props.setColor(`${color}, Vx = ${viewportPosition.x}, Vy = ${viewportPosition.y}, Cx = ${canvasPosition.x}, Cy = ${canvasPosition.y}`);
+    setColor(color);
   }, 25);
 
   return (
@@ -77,6 +80,7 @@ export default function Canvas(props: {
       <img id="img" src="/img.jpg" width={ORIGINAL_IMG_SIZE.w} height={ORIGINAL_IMG_SIZE.h}/>
       <PickerSquare
         centerPosition={viewportPosition}
+        targetColor={color}
         colorMatrix={buildColorMatrix(ctx.current, canvasPosition, ZOOM_RECT_SIZE_PX)}
       />
     </div>

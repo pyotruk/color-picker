@@ -1,12 +1,17 @@
 import React from "react";
 import "./PickerSquare.scss";
 import {ColorMatrix, Position} from "../../structures/geometry";
-import {PICKER_SQUARE_SIZE, ZOOMED_PIXEL_SIZE} from "../../structures/constants";
+import {PICKER_SQUARE_SIZE, ZOOM_RECT_SIZE_PX, ZOOMED_PIXEL_SIZE} from "../../structures/constants";
 
 export default function PickerSquare(props: {
   centerPosition: Position,
   colorMatrix: ColorMatrix,
 }) {
+
+  const isTargetPixel = (i: number, j: number): boolean => {
+    const targetIndex = Math.floor(ZOOM_RECT_SIZE_PX / 2);
+    return i === targetIndex && j === targetIndex;
+  }
 
   return (
     <div
@@ -25,19 +30,19 @@ export default function PickerSquare(props: {
       >
         <i/>
 
-        {props.colorMatrix.map((row: string[], key: number) => {
+        {props.colorMatrix.map((row: string[], i: number) => {
           return <div
             className="row"
-            key={key}
+            key={i}
             style={{
               height: `${ZOOMED_PIXEL_SIZE}px`,
               lineHeight: `${ZOOMED_PIXEL_SIZE}px`,
             }}
           >
-            {row.map((color: string, key: number) => {
+            {row.map((color: string, j: number) => {
               return <div
-                className="px"
-                key={key}
+                className={`px ${isTargetPixel(i, j) ? "target" : ""}`}
+                key={j}
                 style={{
                   backgroundColor: color,
                   width: `${ZOOMED_PIXEL_SIZE}px`,

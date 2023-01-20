@@ -1,9 +1,26 @@
 header {
+  min-height: 4em;
+  display: flex;
+
+  > * {
+    align-self: center;
+  }
+
   i {
     cursor: pointer;
-    display: inline-block;
-    background-image: url("IconColorPicker.svg");
+    background: lightgray url("IconColorPicker.svg") no-repeat center;
     width: 16px;
     height: 16px;
+    margin: 0 2em;
+    padding: .5em;
+    border-radius: 50%;
+  }
+
+  span {
+    align-self: center;
+    flex-grow: 1;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
   }
 }

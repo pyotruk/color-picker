@@ -13,6 +13,7 @@ const ORIGINAL_IMG_SIZE: Size = {
 }
 
 export default function Canvas(props: {
+  isPicking: boolean,
   setColor: (color: string) => void,
 }) {
   const canvas = useRef<HTMLCanvasElement>();
@@ -70,19 +71,22 @@ export default function Canvas(props: {
     setCanvasPosition(canvasPosition);
 
     const color = getPixelHexColor(ctx.current, canvasPosition);
-    props.setColor(`${color}, Vx = ${viewportPosition.x}, Vy = ${viewportPosition.y}, Cx = ${canvasPosition.x}, Cy = ${canvasPosition.y}`);
     setColor(color);
   }, 25);
 
   return (
     <div className="Canvas">
-      <canvas id="canvas" onMouseMove={handleMouseMove}></canvas>
+      <canvas
+        id="canvas"
+        onMouseMove={handleMouseMove}
+        onClick={() => props.isPicking && props.setColor(color)}
+      ></canvas>
       <img id="img" src="/img.jpg" width={ORIGINAL_IMG_SIZE.w} height={ORIGINAL_IMG_SIZE.h}/>
-      <PickerSquare
+      {props.isPicking && <PickerSquare
         centerPosition={viewportPosition}
         targetColor={color}
         colorMatrix={buildColorMatrix(ctx.current, canvasPosition, ZOOM_RECT_SIZE_PX)}
-      />
+      />}
     </div>
   );
 }

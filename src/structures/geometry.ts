@@ -3,4 +3,9 @@ export interface Position {
   y: number;
 }
 
+export interface Size {
+  w: number;
+  h: number;
+}
+
 export type ColorMatrix = string[][];

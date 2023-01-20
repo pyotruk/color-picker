@@ -2,9 +2,15 @@ import React, {useRef, useEffect, useState} from "react";
 import _ from "lodash";
 import "./Canvas.scss";
 import PickerSquare from "./../PickerSquare/PickerSquare";
-import {Position} from "../../structures/geometry";
+import {Position, Size} from "../../structures/geometry";
 import {ZOOM_RECT_SIZE_PX} from "../../structures/constants";
 import {buildColorMatrix, getPixelHexColor} from "../../utils/color";
+import {convertViewportPositionToCanvasPosition} from "../../utils/position";
+
+const ORIGINAL_IMG_SIZE: Size = {
+  w: 1920,
+  h: 1080,
+}
 
 export default function Canvas(props: {
   setColor: (color: string) => void,
@@ -12,7 +18,8 @@ export default function Canvas(props: {
   const canvas = useRef<HTMLCanvasElement>();
   const ctx = useRef<null | CanvasRenderingContext2D>();
 
-  const [centerPosition, setCenterPosition] = useState<Position>({x: 0, y: 0});
+  const [viewportPosition, setViewportPosition] = useState<Position>({x: 0, y: 0});
+  const [canvasPosition, setCanvasPosition] = useState<Position>({x: 0, y: 0});
 
   const initCanvas = (): void => {
     canvas.current = document.getElementById("canvas") as HTMLCanvasElement;
@@ -40,7 +47,7 @@ export default function Canvas(props: {
     drawImage();
   }, []);
 
-  const calcCenterPosition = (event: React.MouseEvent): Position => {
+  const calcViewportPosition = (event: React.MouseEvent): Position => {
     if (!canvas.current) {
       return {x: 0, y: 0};
     }
@@ -52,20 +59,25 @@ export default function Canvas(props: {
   }
 
   const handleMouseMove = _.throttle((event: React.MouseEvent): void => {
-    if (!ctx.current) return;
-    const position = calcCenterPosition(event);
-    setCenterPosition(position);
-    const color = getPixelHexColor(ctx.current, position);
-    props.setColor(`${color}, X = ${position.x}, Y = ${position.y}`);
-  }, 10);
+    if (!ctx.current || !canvas.current) return;
+
+    const viewportPosition = calcViewportPosition(event);
+    const canvasPosition = convertViewportPositionToCanvasPosition(canvas.current, viewportPosition);
+
+    setViewportPosition(viewportPosition);
+    setCanvasPosition(canvasPosition);
+
+    const color = getPixelHexColor(ctx.current, canvasPosition);
+    props.setColor(`${color}, Vx = ${viewportPosition.x}, Vy = ${viewportPosition.y}, Cx = ${canvasPosition.x}, Cy = ${canvasPosition.y}`);
+  }, 25);
 
   return (
     <div className="Canvas">
       <canvas id="canvas" onMouseMove={handleMouseMove}></canvas>
-      <img id="img" src="/img.jpg" width="1920" height="1080"/>
+      <img id="img" src="/img.jpg" width={ORIGINAL_IMG_SIZE.w} height={ORIGINAL_IMG_SIZE.h}/>
       <PickerSquare
-        centerPosition={centerPosition}
-        colorMatrix={buildColorMatrix(ctx.current, centerPosition, ZOOM_RECT_SIZE_PX)}
+        centerPosition={viewportPosition}
+        colorMatrix={buildColorMatrix(ctx.current, canvasPosition, ZOOM_RECT_SIZE_PX)}
       />
     </div>
   );

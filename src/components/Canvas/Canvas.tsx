@@ -1,4 +1,5 @@
 import React, {useRef, useEffect, useState} from "react";
+import _ from "lodash";
 import "./Canvas.scss";
 import PickerSquare from "./../PickerSquare/PickerSquare";
 import {Position} from "../../structures/geometry";
@@ -51,12 +52,13 @@ export default function Canvas(props: {
     };
   }
 
-  const handleMouseMove = (event: React.MouseEvent) => {
+  const handleMouseMove = _.throttle((event: React.MouseEvent) => {
+    console.debug("throttle");
     if (!ctx.current) return;
     const position = getPosition(event);
     setPosition(position);
     props.setColor(getHexColor(ctx.current, position));
-  }
+  }, 10);
 
   return (
     <div className="Canvas">

@@ -25,7 +25,7 @@ export const buildColorMatrix = (
   ctx: null | undefined | CanvasRenderingContext2D,
   centerPosition: Position,
   zoomRectSizePx: number,
-) => {
+): ColorMatrix => {
   const matrix: ColorMatrix = [];
   if (!ctx) return matrix;
 
@@ -41,17 +41,18 @@ export const buildColorMatrix = (
     zoomRectSizePx,
   ).data;
 
-  let row = [];
   for (let i = 0; i < imageData.length; i += RGBA_CHANNELS_NUMBER) {
+    if (i % (zoomRectSizePx * RGBA_CHANNELS_NUMBER) === 0) {
+      matrix.push([]);
+    }
+
     const pixelData = new Uint8ClampedArray(RGBA_CHANNELS_NUMBER);
     for (let j = 0; j < RGBA_CHANNELS_NUMBER; ++j) {
       pixelData[j] = imageData[i + j];
     }
-    row.push(getPixelHexColorFromDataArray(pixelData));
-    if (i > 0 && i % (zoomRectSizePx * RGBA_CHANNELS_NUMBER) === 0) {
-      matrix.push(row);
-      row = [];
-    }
+
+    const color = getPixelHexColorFromDataArray(pixelData);
+    matrix[matrix.length - 1].push(color);
   }
   return matrix;
 }

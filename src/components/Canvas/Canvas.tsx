@@ -4,7 +4,7 @@ import "./Canvas.scss";
 import PickerSquare from "./../PickerSquare/PickerSquare";
 import {Position} from "../../structures/geometry";
 import {ZOOM_RECT_SIZE_PX} from "../../structures/constants";
-import {buildColorMatrix, getHexColor} from "../../utils/color";
+import {buildColorMatrix, getPixelHexColor} from "../../utils/color";
 
 export default function Canvas(props: {
   setColor: (color: string) => void,
@@ -55,7 +55,7 @@ export default function Canvas(props: {
     if (!ctx.current) return;
     const position = calcCenterPosition(event);
     setCenterPosition(position);
-    const color = getHexColor(ctx.current, position);
+    const color = getPixelHexColor(ctx.current, position);
     props.setColor(`${color}, X = ${position.x}, Y = ${position.y}`);
   }, 10);
 

@@ -1,15 +1,24 @@
 import {ColorMatrix, Position} from "../structures/geometry";
 
+const RGBA_CHANNELS_NUMBER = 4; // bytes per pixel
+
 export const rgbToHex = (r: number, g: number, b: number) => {
   if (r > 255 || g > 255 || b > 255) {
-    throw new Error("Invalid color component");
+    throw new Error("Invalid color component.");
   }
   return ((r << 16) | (g << 8) | b).toString(16);
 }
 
-export const getHexColor = (ctx: CanvasRenderingContext2D, position: Position): string => {
-  const colorData = ctx.getImageData(position.x, position.y, 1, 1).data;
-  return "#" + ("000000" + rgbToHex(colorData[0], colorData[1], colorData[2])).slice(-6);
+const getPixelHexColorFromDataArray = (data: Uint8ClampedArray): string => {
+  if (data.length !== RGBA_CHANNELS_NUMBER) {
+    throw new Error("Invalid data array for a single pixel.");
+  }
+  return "#" + ("000000" + rgbToHex(data[0], data[1], data[2])).slice(-6);
+}
+
+export const getPixelHexColor = (ctx: CanvasRenderingContext2D, position: Position): string => {
+  const imageData = ctx.getImageData(position.x, position.y, 1, 1).data;
+  return getPixelHexColorFromDataArray(imageData);
 }
 
 export const buildColorMatrix = (
@@ -25,15 +34,24 @@ export const buildColorMatrix = (
     y: centerPosition.y - zoomRectSizePx / 2,
   }
 
-  for (let i = 0; i < zoomRectSizePx; ++i) {
-    let row = [];
-    for (let j = 0; j < zoomRectSizePx; ++j) {
-      row.push(getHexColor(ctx, {
-        x: topLeftPosition.x + i,
-        y: topLeftPosition.y + j,
-      }));
+  const imageData = ctx.getImageData(
+    topLeftPosition.x,
+    topLeftPosition.y,
+    zoomRectSizePx,
+    zoomRectSizePx,
+  ).data;
+
+  let row = [];
+  for (let i = 0; i < imageData.length; i += RGBA_CHANNELS_NUMBER) {
+    const pixelData = new Uint8ClampedArray(RGBA_CHANNELS_NUMBER);
+    for (let j = 0; j < RGBA_CHANNELS_NUMBER; ++j) {
+      pixelData[j] = imageData[i + j];
     }
-    matrix.push(row);
+    row.push(getPixelHexColorFromDataArray(pixelData));
+    if (i > 0 && i % (zoomRectSizePx * RGBA_CHANNELS_NUMBER) === 0) {
+      matrix.push(row);
+      row = [];
+    }
   }
   return matrix;
 }

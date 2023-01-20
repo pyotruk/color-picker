@@ -1,13 +1,13 @@
 .PickerSquare {
   position: absolute;
   z-index: 1;
-  border: 2px solid magenta;
 
   $zoomedPixelSize: 6px;
 
   .row {
     width: 100%;
     height: $zoomedPixelSize;
+    line-height: $zoomedPixelSize;
 
     .px {
       display: inline-block;

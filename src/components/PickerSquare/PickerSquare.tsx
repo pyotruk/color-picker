@@ -4,7 +4,7 @@ import {ColorMatrix, Position} from "../../structures/geometry";
 import {PICKER_SQUARE_SIZE} from "../../structures/constants";
 
 export default function PickerSquare(props: {
-  position: Position,
+  centerPosition: Position,
   colorMatrix: ColorMatrix,
 }) {
 
@@ -14,8 +14,8 @@ export default function PickerSquare(props: {
       style={{
         width: `${PICKER_SQUARE_SIZE}px`,
         height: `${PICKER_SQUARE_SIZE}px`,
-        top: `${props.position.y - PICKER_SQUARE_SIZE/2}px`,
-        left: `${props.position.x - PICKER_SQUARE_SIZE/2}px`,
+        top: `${props.centerPosition.y - PICKER_SQUARE_SIZE/2}px`,
+        left: `${props.centerPosition.x - PICKER_SQUARE_SIZE/2}px`,
       }}
     >
       {props.colorMatrix.map((row: string[], key: number) => {

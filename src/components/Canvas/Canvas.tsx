@@ -12,7 +12,7 @@ export default function Canvas(props: {
   const canvas = useRef<HTMLCanvasElement>();
   const ctx = useRef<null | CanvasRenderingContext2D>();
 
-  const [position, setPosition] = useState<Position>({x: 0, y: 0});
+  const [centerPosition, setCenterPosition] = useState<Position>({x: 0, y: 0});
 
   const initCanvas = (): void => {
     canvas.current = document.getElementById("canvas") as HTMLCanvasElement;
@@ -40,8 +40,7 @@ export default function Canvas(props: {
     drawImage();
   }, []);
 
-  // TODO consider size of the PickerSquare 120px
-  const getPosition = (event: React.MouseEvent): Position => {
+  const calcCenterPosition = (event: React.MouseEvent): Position => {
     if (!canvas.current) {
       return {x: 0, y: 0};
     }
@@ -52,12 +51,12 @@ export default function Canvas(props: {
     };
   }
 
-  const handleMouseMove = _.throttle((event: React.MouseEvent) => {
-    console.debug("throttle");
+  const handleMouseMove = _.throttle((event: React.MouseEvent): void => {
     if (!ctx.current) return;
-    const position = getPosition(event);
-    setPosition(position);
-    props.setColor(getHexColor(ctx.current, position));
+    const position = calcCenterPosition(event);
+    setCenterPosition(position);
+    const color = getHexColor(ctx.current, position);
+    props.setColor(`${color}, X = ${position.x}, Y = ${position.y}`);
   }, 10);
 
   return (
@@ -65,8 +64,8 @@ export default function Canvas(props: {
       <canvas id="canvas" onMouseMove={handleMouseMove}></canvas>
       <img id="img" src="/img.jpg" width="1920" height="1080"/>
       <PickerSquare
-        position={position}
-        colorMatrix={buildColorMatrix(ctx.current, position, ZOOM_RECT_SIZE_PX)}
+        centerPosition={centerPosition}
+        colorMatrix={buildColorMatrix(ctx.current, centerPosition, ZOOM_RECT_SIZE_PX)}
       />
     </div>
   );

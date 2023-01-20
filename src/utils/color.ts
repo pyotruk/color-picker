@@ -14,18 +14,23 @@ export const getHexColor = (ctx: CanvasRenderingContext2D, position: Position): 
 
 export const buildColorMatrix = (
   ctx: null | undefined | CanvasRenderingContext2D,
-  position: Position,
+  centerPosition: Position,
   zoomRectSizePx: number,
 ) => {
   const matrix: ColorMatrix = [];
   if (!ctx) return matrix;
 
+  const topLeftPosition = {
+    x: centerPosition.x - zoomRectSizePx / 2,
+    y: centerPosition.y - zoomRectSizePx / 2,
+  }
+
   for (let i = 0; i < zoomRectSizePx; ++i) {
     let row = [];
     for (let j = 0; j < zoomRectSizePx; ++j) {
       row.push(getHexColor(ctx, {
-        x: position.x + i,
-        y: position.y + j,
+        x: topLeftPosition.x + i,
+        y: topLeftPosition.y + j,
       }));
     }
     matrix.push(row);

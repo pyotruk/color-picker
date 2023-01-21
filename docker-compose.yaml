@@ -4,9 +4,9 @@ services:
   ui:
     build:
       context: .
-      dockerfile: ./ui/Dockerfile
+      dockerfile: ./Dockerfile
     image: ui
     ports:
-      - "80:80"
+      - "8081:80"
     volumes:
       - ./nginx-logs:/var/log/nginx

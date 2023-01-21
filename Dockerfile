@@ -1,6 +1,6 @@
 FROM node:16 as node
 
-COPY ./ui /usr/src/application
+COPY . /usr/src/application
 
 WORKDIR /usr/src/application
 

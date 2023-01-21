@@ -15,15 +15,15 @@ export const convertViewportPositionToCanvasPosition = (
   const ratio: Position = {
     x: canvas.width / viewportSize.w,
     y: canvas.height / viewportSize.h,
-  }
+  };
 
   return {
     x: ratio.x * viewportPosition.x,
     y: ratio.y * viewportPosition.y,
   };
-}
+};
 
 export const isTargetPixel = (i: number, j: number): boolean => {
   const targetIndex = Math.floor(ZOOM_RECT_SIZE_PX / 2);
   return i === targetIndex && j === targetIndex;
-}
+};

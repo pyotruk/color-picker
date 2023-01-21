@@ -10,7 +10,7 @@ import {convertViewportPositionToCanvasPosition} from "../../utils/position";
 const ORIGINAL_IMG_SIZE: Size = {
   w: 1920,
   h: 1080,
-}
+};
 
 export default function Canvas(props: {
   isPicking: boolean,
@@ -30,7 +30,7 @@ export default function Canvas(props: {
     if (!ctx.current) {
       alert("Failed to init canvas.");
     }
-  }
+  };
 
   const drawImage = (): void => {
     if (!ctx.current) {
@@ -42,8 +42,8 @@ export default function Canvas(props: {
 
     img.onload = () => {
       ctx.current?.drawImage(img, 0, 0);
-    }
-  }
+    };
+  };
 
   useEffect(() => {
     initCanvas();
@@ -59,7 +59,7 @@ export default function Canvas(props: {
       x: event.clientX - clientRect.left,
       y: event.clientY - clientRect.top,
     };
-  }
+  };
 
   const handleMouseMove = _.throttle((event: React.MouseEvent): void => {
     if (!ctx.current || !canvas.current) return;

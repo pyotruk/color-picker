@@ -51,7 +51,7 @@ export default function PickerSquare(props: {
                   backgroundColor: color,
                   width: `${ZOOMED_PIXEL_SIZE}px`,
                 }}
-              ></div>
+              ></div>;
             })}
           </div>;
         })}

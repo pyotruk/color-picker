@@ -7,7 +7,7 @@ describe("getPixelHexColor", () => {
     _mockData: [0, 0, 0, 0],
     getImageData: function (sx: number, sy: number, sw: number, sh: number) {
       return {data: this._mockData as any as Uint8ClampedArray};
-    }
+    },
   };
 
   it("black", () => {
@@ -30,9 +30,9 @@ it("buildColorMatrix", () => {
         data: [
           0, 0, 0, 0, 255, 255, 255, 255, // black, white
           255, 255, 255, 255, 0, 0, 0, 0, // white, black
-        ] as any as Uint8ClampedArray
+        ] as any as Uint8ClampedArray,
       };
-    }
+    },
   };
 
   const colorMatrix = buildColorMatrix(
@@ -45,4 +45,4 @@ it("buildColorMatrix", () => {
     ["#000000", "#ffffff"],
     ["#ffffff", "#000000"],
   ]);
-})
+});

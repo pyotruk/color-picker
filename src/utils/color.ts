@@ -7,19 +7,19 @@ const rgbToHex = (r: number, g: number, b: number) => {
     throw new Error("Invalid color component.");
   }
   return ((r << 16) | (g << 8) | b).toString(16);
-}
+};
 
 const getPixelHexColorFromDataArray = (data: Uint8ClampedArray): string => {
   if (data.length !== RGBA_CHANNELS_NUMBER) {
     throw new Error("Invalid data array for a single pixel.");
   }
   return "#" + ("000000" + rgbToHex(data[0], data[1], data[2])).slice(-6);
-}
+};
 
 export const getPixelHexColor = (ctx: CanvasRenderingContext2D, position: Position): string => {
   const imageData = ctx.getImageData(position.x, position.y, 1, 1).data;
   return getPixelHexColorFromDataArray(imageData);
-}
+};
 
 export const buildColorMatrix = (
   ctx: null | undefined | CanvasRenderingContext2D,
@@ -32,7 +32,7 @@ export const buildColorMatrix = (
   const topLeftPosition = {
     x: centerPosition.x - zoomRectSizePx / 2,
     y: centerPosition.y - zoomRectSizePx / 2,
-  }
+  };
 
   const imageData = ctx.getImageData(
     topLeftPosition.x,
@@ -55,4 +55,4 @@ export const buildColorMatrix = (
     matrix[matrix.length - 1].push(color);
   }
   return matrix;
-}
+};

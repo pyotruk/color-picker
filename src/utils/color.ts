@@ -2,7 +2,7 @@ import {ColorMatrix, Position} from "../structures/geometry";
 
 const RGBA_CHANNELS_NUMBER = 4; // bytes per pixel
 
-export const rgbToHex = (r: number, g: number, b: number) => {
+const rgbToHex = (r: number, g: number, b: number) => {
   if (r > 255 || g > 255 || b > 255) {
     throw new Error("Invalid color component.");
   }

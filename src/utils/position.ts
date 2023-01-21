@@ -1,4 +1,5 @@
 import {Position, Size} from "../structures/geometry";
+import {ZOOM_RECT_SIZE_PX} from "../structures/constants";
 
 export const convertViewportPositionToCanvasPosition = (
   canvas: HTMLCanvasElement,
@@ -20,4 +21,9 @@ export const convertViewportPositionToCanvasPosition = (
     x: ratio.x * viewportPosition.x,
     y: ratio.y * viewportPosition.y,
   };
+}
+
+export const isTargetPixel = (i: number, j: number): boolean => {
+  const targetIndex = Math.floor(ZOOM_RECT_SIZE_PX / 2);
+  return i === targetIndex && j === targetIndex;
 }

@@ -1,19 +1,14 @@
 import React from "react";
 import "./PickerSquare.scss";
 import {ColorMatrix, Position} from "../../structures/geometry";
-import {PICKER_SQUARE_SIZE, ZOOM_RECT_SIZE_PX, ZOOMED_PIXEL_SIZE} from "../../structures/constants";
+import {PICKER_SQUARE_SIZE, ZOOMED_PIXEL_SIZE} from "../../structures/constants";
+import {isTargetPixel} from "../../utils/position";
 
 export default function PickerSquare(props: {
   centerPosition: Position,
   targetColor: string,
   colorMatrix: ColorMatrix,
 }) {
-
-  const isTargetPixel = (i: number, j: number): boolean => {
-    const targetIndex = Math.floor(ZOOM_RECT_SIZE_PX / 2);
-    return i === targetIndex && j === targetIndex;
-  }
-
   return (
     <div
       className="PickerSquare"
